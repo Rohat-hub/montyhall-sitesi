@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Monty Hall Yarışması</title>
+    <style>
+    /* Diğer stilleriniz */
+    #sunucu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    #sunucu img {
+        width: 120px;
+        height: auto;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    #sunucu p {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        header { text-align: center; margin-bottom: 20px; }
+        nav { text-align: center; margin-bottom: 20px; }
+        nav button { margin: 0 5px; padding: 10px 20px; cursor: pointer; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .doors { display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .door { width: 150px; margin: 10px; text-align: center; cursor: pointer; border: 2px solid #ccc; padding: 5px; }
+        .door.active { border: 3px solid green; }
+        .door img { width: 100%; }
+        #monty3-controls, #monty10-controls { text-align: center; }
+        #result3, #result10, #stats3, #stats10 { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Let's Make a Deal Yarışma Programına Hoş Geldiniz!</h1>
+    <div id="sunucu">
+        <img src="host.png" alt="Sunucu">
+        <p>Ben sunucunuz Monty Hall. Bu kapılardan birisinin arkasında bir araba var eğer o kapıyı seçerseniz arabayı kazanırsınız. Bir kapı seçin. Kapınızı seçtikten sonra size kolaylık olması için geriye 2 kapı kalana kadar keçi olan kapıları açacağız.</p>
+    </div>
+</header>
+
+<nav>
+    <button onclick="showSection('monty3')">3 Kapı</button>
+    <button onclick="showSection('monty10')">10 Kapı</button>
+    <button onclick="showSection('bilgi')">Bilgi</button>
+</nav>
+
+<section id="monty3" class="section active">
+    <h2>Standart Monty Hall (3 Kapı)</h2>
+    <div class="doors" id="doors3"></div>
+    <div id="monty3-controls"></div>
+    <div id="result3"></div>
+    <div id="stats3"></div>
+</section>
+
+<section id="monty10" class="section">
+    <h2>Monty Hall (10 Kapı)</h2>
+    <div class="doors" id="doors10"></div>
+    <div id="monty10-controls"></div>
+    <div id="result10"></div>
+    <div id="stats10"></div>
+</section>
+
+<section id="bilgi" class="section">
+    <h2>Monty Hall Problemi Hakkında</h2>
+    <p>
+        Let’s Make a Deal, Amerika Birleşik Devletleri’nde yayınlanmaya başlanan ve ve dünya çapında birçok ülkede uyarlaması yapılan bir yarışma programıdır. Şovun ilk ve en ünlü versiyonu 1963-1976 yılları arasında yayınlanmıştır. Sonraki bazı yıllarda da tekrar yayınlanıp tekrar sonlanmıştır. Let’s Make a Deal programının en ünlü ve ilk sunucularından biri olan Monty Hall’un ismi bu probleme verilmiştir. Problem aslında basit ama kafa karıştırıcı bir matematiksel olasılık sorusudur. Bu problemde üç kapı vardır ve bu kapıların ikisinin arkasında kötü ve ucuz bir ödül olan keçi vardır fakat diğer kapının arkasında büyük ödül olan herhangi bir araba vardır.</p>
+    
+    <p>Yarışmanın sunucusu hangi kapının arkasında araba ve hangilerinin arkasında keçi olduğunu bilmektedir. Başta yarışmacıya bir seçme hakkı verilir ve yarışmacı bir kapıyı seçer, ardından sunucu yarışmacıya kolaylık olması için bir kapıyı açar ve o kapıdan her zaman keçi çıkmaktadır. Ardından yarışmacıya tekrar bir seçme hakkı verilmektedir. Yarışmacı ilk başta seçtiği kapıda kalabilir veya kalan diğer kapıyı seçebilir. Son olarak yarışmacı kapının arkasında çıkan ödülü almaktadır.</p>
+
+    <p>Monty Hall Problemi, olasılık kuramı içerisinde dikkat çeken ve geniş çapta tartışmalara yol açan klasik bir problemdir. Bu problemin kamuoyunda yaygın şekilde tanınması, 1991 yılına uzanmaktadır. 21 Temmuz 1991 tarihinde The New York Times gazetesinde John Tierney tarafından kaleme alınan bir yazıda, Monty Hall yarışmasında kapıyı değiştirme seçeneğinin kazanma olasılığını artırdığı öne sürülmüştür (Tierney, 1991). Aynı yılın Eylül ayında ise, gazetenin köşe yazarlarından Marilyn vos Savant’a “Ask Marilyn” adlı köşesine yöneltilen bir soru aracılığıyla konu daha da geniş kitlelere ulaşmıştır. Vos Savant’ın çözümü kamuoyuyla paylaşması üzerine, ABD genelinde 10.000’den fazla okur görüş bildirmiştir (vos Savant, 1991).</p>
+
+    <p>Cevapların büyük bir kısmı, karar değiştirmenin kazanma şansı üzerinde etkili olmadığı yönündedir. Bu yaklaşım, insan sezgilerinin olasılık analizleriyle zaman zaman çelişebileceğini göstermektedir. Ancak yapılan matematiksel analizler, kapıyı değiştiren yarışmacının kazanma olasılığının 1/3’ten 2/3’e yükseldiğini ortaya koymuş; bu da karar değiştirmenin kazanma şansını iki katına çıkardığını göstermiştir (Rosenhouse, 2009).</p>
+
+    <p>İlk etapta bu sonuca karşı çıkanlar arasında ünlü matematikçi Paul Erdős gibi saygın isimler de bulunmaktaydı. Ancak konu üzerine yapılan kapsamlı açıklamalar, simülasyonlar ve deneysel veriler sonucunda, bu isimler de çözümün doğruluğunu kabul etmiştir.</p>
+
+    <p>Monty Hall Problemi, günümüzde de özellikle olasılık kuramının sezgilere aykırı yönlerini göstermek amacıyla sıkça başvurulan, eğitici ve düşündürücü bir örnek olmaya devam etmektedir.</p>
+
+    <h3>Problemin Açıklanması</h3>
+    <p>İlk bakışta sona kalan iki kapıdan araba kazanma olasılığı 1/2’den %50 olarak sanılmaktadır fakat öyle değildir. İlk seçtiğimiz kapıdan araba kazanma olasılığı 1/3’ten yaklaşık olarak %33,3 iken sona kalan diğer kapıdan araba kazanma olasılığı 2/3’ten yaklaşık olarak %66,7’dir. Çünkü ilk başta üç kapı varken her kapıdan araba çıkma olasılığı yaklaşık %33,3’tür. Yani bizim ilk başta seçtiğimiz kapıdan araba çıkma olasılığı yaklaşık %33,3’tür ve kalan iki kapıdan araba çıkma olasılığı yaklaşık %66,7’dir. Sunucu kalan iki kapıdan kesinlikle keçi olan kapıyı açacaktır. Bu yüzden yarışmacının ilk başta seçtiği kapıdan araba kazanma olasılığı yaklaşık %33,3 iken sona kalan diğer kapıdan araba kazanma olasılığı yaklaşık %66,7’dir. Yani sunucu keçi olan kapıyı açtıktan sonra yarışmacı seçtiği kapıyı değiştirse şansı ikiye katlanmaktadır.</p>>
+<div style="display: flex; flex-direction: column; align-items: center; margin-top: 1em;">
+    <img src="monty-hall-tablosu.png" alt="Monty Hall olasılık tablosu" style="max-width: 20%; height: auto; border: 5px solid #dce0ff; padding: 5px;">
+    <p style="max-width: 10000999999px; text-align: justify; margin-top: 1em;">
+     Problemde kapıyı değiştirince şansın artmasını ispatlamanın birden fazla yolu vardır. 
+     En kolay yollarından biri de tüm olasılıklara teker teker bakmaktır. 
+    Görseldeki ilk duruma bakıldığında ödülün 1. kapının arkasında olduğunu, kapıyı değiştirince kaybedildiği, değiştirmeyince ise kazanıldığı görülmektedir. 
+    2. durumda kapıyı değiştirince kazanılır, değiştirmeyince ise kaybedilir. 
+    3. durumda yine kapıyı değiştirince kazanılır. 
+    Bu 3 durumdan ikisinde kapı değiştirildiğinde ödül kazanılırken, birinde kapı değiştirilmediğinde ödül kazanılır. 
+    Yani kapıyı değiştirince kazanma oranı %66 iken değiştirmeyince kazanma oranı %33’tür. 
+    9. duruma kadar sonuç böyle devam etmektedir.
+    </p>
+</div>
+
+    <h4>Bayes Teoremiyle Problemin Açıklanması</h4>
+    <p>Bayes teoremi, 18. yüzyılda yaşamış İngiliz matematikçi Thomas Bayes’in adını taşıyan, koşullu olasılığı belirlemek için kullanılan matematiksel bir formüldür. Koşullu olasılık, benzer koşullarda önceki bir sonuca dayanarak bir sonucun ortaya çıkma olasılığıdır. Bayes Teoremi, yeni veya ek kanıtlar verildiğinde mevcut tahminleri veya teorileri revize etmenin (olasılıkları güncellemenin) bir yolunu sağlamaktadır.</p>
+
+    <p>Bayes teoremine göre, belirli bir koşul gerçekleştikten sonra bir olayın olasılığı şu şekilde hesaplanır: <br>
+    <code>P(A|B) = (P(B|A) × P(A)) / P(B)</code></p>
+
+    <p>P(A), A olayının gerçekleşme olasılığı ve P(B) B olayının gerçekleşme olasılığını ifade etmektedir. P(A|B) B olayı gerçekleştiğinde A olayının gerçekleşme olasılığı iken P(B|A) ise A olayı gerçekleştiğinde B olayının gerçekleşme olasılığıdır.</p>
+
+    <p>Bu problemde P(A), yarışmacının yarışmanın başında seçtiği kapının arkasında araba olma ihtimalidir. Yarışma başında üç kapı olduğu için ve yarışmacı tamamen rastgele bir şekilde kapı seçtiği için ihtimal 1/3 (%33,33…)’tür. P(B) ise sunucunun arkasında keçi olan bir kapıyı açma ihtimalidir. Sunucu hangi kapının arkasında araba olduğunu bildiği için ve yarışmanın doğru bir şekilde ilerlemesi için her zaman kesinlikle arkasında keçi olan kapıyı açacaktır. Yani P(B) = 1 (%100) olmaktadır. P(B|A), yarışmacının yarışma başında kapı seçtikten sonra sunucunun arkasında keçi olan kapıyı açma ihtimali yani 1’dir.</p>
+
+    <p>Bu durumda  <code>P(A|B) = (1 × 1/3) / 1 = 1/3</code> olur. Bu sonuç, yarışmacının ilk seçtiği kapıda arabanın bulunma olasılığının değişmediğini, hâlâ 1/3 olduğunu gösterir. Buna karşılık, diğer kapılardan birinde arabanın bulunma olasılığı 2/3’tür ve sunucu arkasında keçi bulunan kapıyı açarak bu ihtimali tek bir kapıya düşürmüştür. Bu nedenle, yarışmacı kapısını değiştirirse kazanma şansı 2/3, yani yaklaşık %66 olurken kapıyı değiştirmezse kazanma şansı sadece 1/3, yani yaklaşık %33 olarak kalır.</p>
+</div>
+</section>
+
+<script>
+    // Rastgele karıştırma fonksiyonu
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Bölümler arası geçiş fonksiyonu
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    // Global istatistikler
+let monty3Stats = { total: 0, switchWins: 0, stayWins: 0, switchLoses: 0, stayLoses: 0 };
+let monty10Stats = { total: 0, switchWins: 0, stayWins: 0, switchLoses: 0, stayLoses: 0 };
+
+
+    // ----- 3 Kapılı Monty Hall -----
+    function initMonty3() {
+        const doorsContainer = document.getElementById('doors3');
+        doorsContainer.innerHTML = '';
+        // Ödüllerin dağılımı: 1 Araba, 2 Keçi
+        let prizes = ['Araba', 'Keçi', 'Keçi'];
+        prizes = shuffle(prizes);
+        for (let i = 0; i < prizes.length; i++) {
+            const doorDiv = document.createElement('div');
+            doorDiv.className = 'door';
+            doorDiv.dataset.index = i;
+            doorDiv.dataset.prize = prizes[i];
+            doorDiv.innerHTML = `<img src="door.png" alt="Kapı"><p>Kapı ${i+1}</p>`;
+            doorDiv.addEventListener('click', () => selectDoor3(i));
+            doorsContainer.appendChild(doorDiv);
+        }
+        document.getElementById('result3').innerHTML = '';
+        document.getElementById('monty3-controls').innerHTML = '';
+        window.monty3 = { prizes: prizes, userChoice: null, hostRevealed: null };
+    }
+
+    function selectDoor3(index) {
+        if (window.monty3.userChoice !== null) return; // Tek seçim yapılmasını sağlar
+        window.monty3.userChoice = index;
+        // Seçilen kapıyı vurgula
+        document.querySelectorAll('#doors3 .door').forEach(door => {
+            if (door.dataset.index == index) {
+                door.classList.add('active');
+            }
+        });
+        // Sunucu, kullanıcının seçmediği ve keçi olan bir kapıyı açar
+        const prizes = window.monty3.prizes;
+        let hostIndex = -1;
+        for (let i = 0; i < prizes.length; i++) {
+            if (i !== index && prizes[i] === 'Keçi') {
+                hostIndex = i;
+                break;
+            }
+        }
+        window.monty3.hostRevealed = hostIndex;
+        const hostDoor = document.querySelector(`#doors3 .door[data-index="${hostIndex}"]`);
+        hostDoor.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(hostIndex)+1}</p>`;
+        // Kullanıcıya kapıyı değiştirip değiştirmemesi seçeneği sunuluyor
+        const controls = document.getElementById('monty3-controls');
+        controls.innerHTML = `<p>Kapıyı değiştirmek ister misin?</p>
+                              <button onclick="makeFinalChoice3(true)">Evet</button>
+                              <button onclick="makeFinalChoice3(false)">Hayır</button>`;
+    }
+
+    function makeFinalChoice3(switchChoice) {
+    const userChoice = window.monty3.userChoice;
+    const hostRevealed = window.monty3.hostRevealed;
+    let finalChoice;
+
+    if (switchChoice) {
+        // Kullanıcının seçmediği ve sunucunun açmadığı kapıyı bul
+        finalChoice = [0, 1, 2].find(i => i !== userChoice && i !== hostRevealed);
+    } else {
+        // Aynı kapıyı koru
+        finalChoice = userChoice;
+    }
+
+    const doorElem = document.querySelector(`#doors3 .door[data-index="${finalChoice}"]`);
+    const prize = window.monty3.prizes[finalChoice];
+    const isWin = (prize === 'Araba');
+
+    if (isWin) {
+        doorElem.innerHTML = `<img src="car.png" alt="Araba"><p>Kapı ${parseInt(finalChoice) + 1}</p>`;
+        document.getElementById('result3').innerHTML = `<h3>Tebrikler, Araba kazandın!</h3>`;
+        if (switchChoice) {
+            monty3Stats.switchWins++;
+        } else {
+            monty3Stats.stayWins++;
+        }
+    } else {
+        doorElem.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(finalChoice) + 1}</p>`;
+        document.getElementById('result3').innerHTML = `<h3>Maalesef, keçi çıktı!</h3>`;
+        if (switchChoice) {
+            monty3Stats.switchLoses++;
+        } else {
+            monty3Stats.stayLoses++;
+        }
+    }
+
+    monty3Stats.total++;
+    updateStats3();
+    document.getElementById('monty3-controls').innerHTML += `<br><button onclick="initMonty3()">Yeniden Oyna</button>`;
+}
+
+
+
+    function updateStats3() {
+    const statsDiv = document.getElementById('stats3');
+    statsDiv.innerHTML = `
+        <p>Toplam Oyun: ${monty3Stats.total} | 
+        Değiştirip Kazanma: ${monty3Stats.switchWins} | 
+        Değiştirip Kaybetme: ${monty3Stats.switchLoses} | 
+        Değiştirmeyip Kazanma: ${monty3Stats.stayWins} | 
+        Değiştirmeyip Kaybetme: ${monty3Stats.stayLoses}</p>`;
+}
+
+
+
+    // ----- 10 Kapılı Monty Hall -----
+    function initMonty10() {
+        const doorsContainer = document.getElementById('doors10');
+        doorsContainer.innerHTML = '';
+        // Ödüllerin dağılımı: 1 Araba, 9 Keçi
+        let prizes = ['Araba'];
+        for (let i = 0; i < 9; i++) {
+            prizes.push('Keçi');
+        }
+        prizes = shuffle(prizes);
+        for (let i = 0; i < prizes.length; i++) {
+            const doorDiv = document.createElement('div');
+            doorDiv.className = 'door';
+            doorDiv.dataset.index = i;
+            doorDiv.dataset.prize = prizes[i];
+            doorDiv.innerHTML = `<img src="door.png" alt="Kapı"><p>Kapı ${i+1}</p>`;
+            doorDiv.addEventListener('click', () => selectDoor10(i));
+            doorsContainer.appendChild(doorDiv);
+        }
+        document.getElementById('result10').innerHTML = '';
+        document.getElementById('monty10-controls').innerHTML = '';
+        window.monty10 = { prizes: prizes, userChoice: null, hostRevealed: [] };
+    }
+
+    function selectDoor10(index) {
+        if (window.monty10.userChoice !== null) return;
+        window.monty10.userChoice = index;
+        document.querySelectorAll('#doors10 .door').forEach(door => {
+            if (door.dataset.index == index) {
+                door.classList.add('active');
+            }
+        });
+        const prizes = window.monty10.prizes;
+        let available = [];
+        for (let i = 0; i < prizes.length; i++) {
+            if (i !== index && prizes[i] === 'Keçi') {
+                available.push(i);
+            }
+        }
+        // Sunucu, kullanılabilir keçi kapılarından rastgele 8 tanesini açar
+        let hostReveal = [];
+        while (hostReveal.length < 8 && available.length > hostReveal.length) {
+            const randIndex = available[Math.floor(Math.random() * available.length)];
+            if (!hostReveal.includes(randIndex)) {
+                hostReveal.push(randIndex);
+            }
+        }
+        window.monty10.hostRevealed = hostReveal;
+        hostReveal.forEach(i => {
+            const doorElem = document.querySelector(`#doors10 .door[data-index="${i}"]`);
+            doorElem.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(i)+1}</p>`;
+        });
+        const controls = document.getElementById('monty10-controls');
+        controls.innerHTML = `<p>Kapıyı değiştirmek ister misin?</p>
+                              <button onclick="makeFinalChoice10(true)">Evet</button>
+                              <button onclick="makeFinalChoice10(false)">Hayır</button>`;
+    }
+
+    function makeFinalChoice10(switchChoice) {
+    const userChoice = window.monty10.userChoice;
+    const hostRevealed = window.monty10.hostRevealed;
+    let finalChoice;
+
+    if (switchChoice) {
+        // Kullanıcının seçmediği ve sunucunun açmadığı kapıyı bul
+        finalChoice = [...Array(10).keys()].find(i => i !== userChoice && !hostRevealed.includes(i));
+    } else {
+        // Aynı kapıyı koru
+        finalChoice = userChoice;
+    }
+
+    const doorElem = document.querySelector(`#doors10 .door[data-index="${finalChoice}"]`);
+    const prize = window.monty10.prizes[finalChoice];
+    const isWin = (prize === 'Araba');
+
+    if (isWin) {
+        doorElem.innerHTML = `<img src="car.png" alt="Araba"><p>Kapı ${parseInt(finalChoice) + 1}</p>`;
+        document.getElementById('result10').innerHTML = `<h3>Tebrikler, Araba kazandın!</h3>`;
+        if (switchChoice) {
+            monty10Stats.switchWins++;
+        } else {
+            monty10Stats.stayWins++;
+        }
+    } else {
+        doorElem.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(finalChoice) + 1}</p>`;
+        document.getElementById('result10').innerHTML = `<h3>Maalesef, keçi çıktı!</h3>`;
+        if (switchChoice) {
+            monty10Stats.switchLoses++;
+        } else {
+            monty10Stats.stayLoses++;
+        }
+    }
+
+    monty10Stats.total++;
+    updateStats10();
+    document.getElementById('monty10-controls').innerHTML += `<br><button onclick="initMonty10()">Yeniden Oyna</button>`;
+}
+
+
+   function updateStats10() {
+    const statsDiv = document.getElementById('stats10');
+    statsDiv.innerHTML = `
+        <p>Toplam Oyun: ${monty10Stats.total} | 
+        Değiştirip Kazanma: ${monty10Stats.switchWins} | 
+        Değiştirip Kaybetme: ${monty10Stats.switchLoses} | 
+        Değiştirmeyip Kazanma: ${monty10Stats.stayWins} | 
+        Değiştirmeyip Kaybetme: ${monty10Stats.stayLoses}</p>`;
+}
+
+
+    // Sayfa yüklendiğinde her iki simülasyonu da başlat
+    window.onload = function() {
+        initMonty3();
+        initMonty10();
+    }
+</script>
+</body>
+</html>

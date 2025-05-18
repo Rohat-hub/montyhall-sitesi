@@ -43,7 +43,7 @@
     <h1>Let's Make a Deal Yarışma Programına Hoş Geldiniz!</h1>
     <div id="sunucu">
         <img src="host.png" alt="Sunucu">
-        <p>Ben sunucunuz Monty Hall. Bu kapılardan birisinin arkasında bir araba var eğer o kapıyı seçerseniz arabayı kazanırsınız. Bir kapı seçin. Kapınızı seçtikten sonra size kolaylık olması için geriye 2 kapı kalana kadar keçi olan kapıları açacağız.</p>
+        <p>Ben yarışmanın sunucusu Monty Hall. Bu kapılardan birisinin arkasında bir araba ve diğer kapıların arkasında keçi var eğer araba olan kapıyı seçerseniz arabayı kazanırsınız. Bir kapı seçin. </p>
     </div>
 </header>
 
@@ -179,7 +179,7 @@ let monty10Stats = { total: 0, switchWins: 0, stayWins: 0, switchLoses: 0, stayL
         hostDoor.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(hostIndex)+1}</p>`;
         // Kullanıcıya kapıyı değiştirip değiştirmemesi seçeneği sunuluyor
         const controls = document.getElementById('monty3-controls');
-        controls.innerHTML = `<p>Kapıyı değiştirmek ister misin?</p>
+        controls.innerHTML = `<p>Size kolaylık olması için sizin seçmediğiniz ve arkasında keçi olan bir kapıyı açtık. Seçtiğiniz kapıyı değiştirmek ister misiniz?</p>
                               <button onclick="makeFinalChoice3(true)">Evet</button>
                               <button onclick="makeFinalChoice3(false)">Hayır</button>`;
     }
@@ -291,7 +291,7 @@ let monty10Stats = { total: 0, switchWins: 0, stayWins: 0, switchLoses: 0, stayL
             doorElem.innerHTML = `<img src="goat.png" alt="Keçi"><p>Kapı ${parseInt(i)+1}</p>`;
         });
         const controls = document.getElementById('monty10-controls');
-        controls.innerHTML = `<p>Kapıyı değiştirmek ister misin?</p>
+        controls.innerHTML = `<p>Size kolaylık olması için sizin seçmediğiniz ve arkasında keçi olan kapılardan geriye son iki kapı kalana kadar açtık. Seçtiğiniz kapıyı değiştirmek ister misiniz?</p>
                               <button onclick="makeFinalChoice10(true)">Evet</button>
                               <button onclick="makeFinalChoice10(false)">Hayır</button>`;
     }

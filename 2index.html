@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Monty Hall Yarışması - Otomatik Simülasyon</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { margin: 5px; padding: 10px 20px; cursor: pointer; }
+        #simulation-controls { margin: 20px 0; text-align: center; }
+        #simulation-result { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Monty Hall Yarışması - Otomatik Simülasyon</h1>
+    <div id="simulation-controls">
+        <label for="sim-count">Simülasyon Sayısı:</label>
+        <input type="number" id="sim-count" value="1000" min="1" max="100000">
+        <button onclick="runSimulation()">Simülasyonu Başlat</button>
+    </div>
+    <div id="simulation-result"></div>
+</header>
+
+<script>
+function runSimulation() {
+    const simCount = parseInt(document.getElementById('sim-count').value);
+    let switchWins = 0;
+    let stayWins = 0;
+
+    for (let i = 0; i < simCount; i++) {
+        const prizes = ['Araba', 'Keçi', 'Keçi'];
+        const userChoice = Math.floor(Math.random() * 3);
+        const carIndex = Math.floor(Math.random() * 3);
+        const switchChoice = Math.random() > 0.5;
+
+        if ((userChoice === carIndex && !switchChoice) || (userChoice !== carIndex && switchChoice)) {
+            switchChoice ? switchWins++ : stayWins++;
+        }
+    }
+
+    const resultDiv = document.getElementById('simulation-result');
+    resultDiv.innerHTML = `
+        <p>Toplam Simülasyon: ${simCount}</p>
+        <p>Kapıyı Değiştirip Kazanma: ${switchWins} (${((switchWins / simCount) * 100).toFixed(2)}%)</p>
+        <p>Kapıyı Değiştirmeyip Kazanma: ${stayWins} (${((stayWins / simCount) * 100).toFixed(2)}%)</p>
+    `;
+}
+</script>
+
+</body>
+</html>
